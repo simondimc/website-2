@@ -4,7 +4,7 @@
   font-display: swap;
 }
 :root {
-  --bg: #ecf4f9;
+  --bg: #f3eee4;
   --max: 1000px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }

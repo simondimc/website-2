@@ -1,0 +1,6 @@
+src/content/projects/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+src/content/projects/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+src/content/projects/**/*.png filter=lfs diff=lfs merge=lfs -text
+src/content/projects/**/*.webp filter=lfs diff=lfs merge=lfs -text
+src/content/projects/**/*.avif filter=lfs diff=lfs merge=lfs -text
+src/content/projects/**/*.heic filter=lfs diff=lfs merge=lfs -text

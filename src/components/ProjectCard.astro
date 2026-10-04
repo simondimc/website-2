@@ -1,13 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 import { categories } from '../content.config';
-import { coverFor } from '../lib';
+import { coverFor, url } from '../lib';
 
 const { project } = Astro.props;
 const { title, category, year, summary, cover } = project.data;
 const img = coverFor(project.id, cover);
 ---
-<a class="section card" href={`/projekti/${project.id}/`}>
+<a class="section card" href={url(`/projekti/${project.id}/`)}>
   <div class="thumb">
     {img ? <Image src={img.src} alt={title} widths={[400, 700, 1000]} sizes="(min-width: 900px) 320px, 90vw" /> : <div class="empty" />}
   </div>

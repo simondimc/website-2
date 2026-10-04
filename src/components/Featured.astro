@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { coverFor } from '../lib';
+import { coverFor, url } from '../lib';
 
 const { projects } = Astro.props;
 const SLOTS = 4;
@@ -12,7 +12,7 @@ const empty = Math.max(0, SLOTS - projects.length);
     {projects.map((p: any) => {
       const img = coverFor(p.id, p.data.cover);
       return (
-        <a class="tile" href={`/projekti/${p.id}/`} title={p.data.title}>
+        <a class="tile" href={url(`/projekti/${p.id}/`)} title={p.data.title}>
           {img && <Image src={img.src} alt={p.data.title} widths={[300, 500, 800]} sizes="(min-width: 700px) 240px, 45vw" />}
         </a>
       );

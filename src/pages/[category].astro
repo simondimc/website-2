@@ -2,18 +2,24 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Grid from '../components/Grid.astro';
-import { categories } from '../content.config';
+import Gallery from '../components/Gallery.astro';
+import { categories, galleryCategories } from '../content.config';
+import { imagesFor } from '../lib';
 
 export function getStaticPaths() {
   return Object.keys(categories).map((category) => ({ params: { category } }));
 }
 const { category } = Astro.params;
 const label = categories[category as keyof typeof categories];
+const asGallery = (galleryCategories as readonly string[]).includes(category!);
 const projects = (await getCollection('projects'))
   .filter((p) => p.data.category === category)
   .sort((a, b) => b.data.year - a.data.year);
+const images = asGallery ? projects.flatMap((p) => imagesFor(p.id)) : [];
+const hasContent = asGallery ? images.length > 0 : projects.length > 0;
 ---
 <Base title={label}>
   <div class="section"><span class="section-title">{label}</span></div>
-  {projects.length ? <Grid projects={projects} /> : <div class="section muted">Tu še ni projektov.</div>}
+  {!hasContent && <div class="section muted">{asGallery ? 'Tu še ni slik.' : 'Tu še ni projektov.'}</div>}
+  {hasContent && (asGallery ? <Gallery images={images} alt={label} /> : <Grid projects={projects} />)}
 </Base>

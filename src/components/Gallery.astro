@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets';
+import type { ProjectImage } from '../lib';
+
+interface Props { images: ProjectImage[]; alt: string }
+const { images, alt } = Astro.props;
+---
+<div class="section">
+  <div class="gallery">
+    {images.map((img, i) => (
+      <button type="button" class="shot" data-full={img.src.src} aria-label={`Povečaj sliko ${i + 1}`}>
+        <Image src={img.src} alt={`${alt} – slika ${i + 1}`} widths={[500, 800, 1200]} sizes="(min-width: 900px) 300px, 90vw" loading={i < 3 ? 'eager' : 'lazy'} />
+      </button>
+    ))}
+  </div>
+</div>
+
+<dialog id="lightbox">
+  <button type="button" class="close" aria-label="Zapri">×</button>
+  <img alt="" />
+</dialog>
+
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>('#lightbox')!;
+  const big = dlg.querySelector('img')!;
+  document.querySelectorAll<HTMLButtonElement>('.shot').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const thumb = btn.querySelector('img')!;
+      big.src = btn.dataset.full!;
+      big.alt = thumb.alt;
+      dlg.showModal();
+    });
+  });
+  dlg.addEventListener('click', () => dlg.close());
+</script>
+
+<style>
+  .gallery { columns: 3 260px; column-gap: 10px; }
+  .shot { display: block; width: 100%; padding: 0; margin: 0 0 10px; border: 1px solid black; background: var(--bg); cursor: zoom-in; break-inside: avoid; border-radius: 3px; overflow: hidden; }
+  .shot img { width: 100%; }
+  dialog { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; }
+  dialog::backdrop { background: rgb(0 0 0 / .88); }
+  dialog img { position: absolute; inset: 0; margin: auto; max-width: 94vw; max-height: 94vh; object-fit: contain; }
+  .close { position: absolute; top: 1rem; right: 1.25rem; z-index: 1; font-size: 2.5rem; line-height: 1; color: #fff; background: none; border: 0; cursor: pointer; }
+</style>

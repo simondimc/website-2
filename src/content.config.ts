@@ -8,6 +8,9 @@ export const categories = {
   skecirka: 'Skecirka',
 } as const;
 
+// kategorije, ki namesto kartic projektov prikažejo samo galerijo slik
+export const galleryCategories = ['portreti', 'skecirka'] as const;
+
 const projects = defineCollection({
   loader: glob({ pattern: '*/index.md', base: './src/content/projects' }),
   schema: z.object({

@@ -22,3 +22,8 @@ export function coverFor(slug: string, cover?: string): ProjectImage | undefined
   const imgs = imagesFor(slug);
   return imgs.find((i) => i.name === cover) ?? imgs[0];
 }
+
+/** Pot z upoštevanjem `base` (npr. /website-2 na GitHub Pages). */
+export function url(path: string): string {
+  return import.meta.env.BASE_URL.replace(/\/$/, '') + path;
+}

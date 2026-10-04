@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Grid from '../components/Grid.astro';
+import { categories } from '../content.config';
+
+export function getStaticPaths() {
+  return Object.keys(categories).map((category) => ({ params: { category } }));
+}
+const { category } = Astro.params;
+const label = categories[category as keyof typeof categories];
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.category === category)
+  .sort((a, b) => b.data.year - a.data.year);
+---
+<Base title={label}>
+  <div class="section"><span class="section-title">{label}</span></div>
+  {projects.length ? <Grid projects={projects} /> : <div class="section muted">Tu še ni projektov.</div>}
+</Base>

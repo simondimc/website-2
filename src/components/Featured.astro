@@ -1,0 +1,31 @@
+---
+import { Image } from 'astro:assets';
+import { coverFor } from '../lib';
+
+const { projects } = Astro.props;
+const SLOTS = 4;
+const empty = Math.max(0, SLOTS - projects.length);
+---
+<section class="section">
+  <span class="section-title">Izbrano</span>
+  <div class="featured">
+    {projects.map((p: any) => {
+      const img = coverFor(p.id, p.data.cover);
+      return (
+        <a class="tile" href={`/projekti/${p.id}/`} title={p.data.title}>
+          {img && <Image src={img.src} alt={p.data.title} widths={[300, 500, 800]} sizes="(min-width: 700px) 240px, 45vw" />}
+        </a>
+      );
+    })}
+    {projects.length === 0 && Array.from({ length: empty }).map(() => <div class="tile placeholder" aria-hidden="true" />)}
+  </div>
+  {projects.length === 0 && <p class="muted note">Tu bodo izbrane slike.</p>}
+</section>
+<style>
+  .featured { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+  .tile { display: block; aspect-ratio: 1; overflow: hidden; border: 1px solid black; border-radius: 3px; background: var(--bg); }
+  .tile img { width: 100%; height: 100%; object-fit: cover; }
+  a.tile:hover { outline: 2px solid black; }
+  .placeholder { border-style: dashed; }
+  .note { margin-top: 8px; font-size: 14px; }
+</style>

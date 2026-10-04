@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Grid from '../components/Grid.astro';
+import Featured from '../components/Featured.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title),
+);
+const featured = projects.filter((p) => p.data.featured);
+---
+<Base>
+  <div class="section intro">
+    Ilustracije, portreti in skice: zbirka mojih prostočasnih projektov risanja.
+  </div>
+  <Featured projects={featured} />
+  {projects.length > 0 && <Grid projects={projects} />}
+</Base>
+<style>
+  .intro { text-align: center; }
+</style>
